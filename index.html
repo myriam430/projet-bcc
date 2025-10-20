@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boutique Pro</title>
+  <link rel="stylesheet" href="src/output.css" />
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 3s ease-out forwards;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 font-sans">
+  <!-- Bannière info -->
+  <div class="bg-gray-50 text-gray-600 text-sm shadow px-4 py-2 flex flex-wrap justify-center gap-4 text-center">
+    <span>Livraison gratuite</span>
+    <span> Garantie qualité</span>
+    <span> Retours rapides</span>
+    <span> Aucun frais caché</span>
+  </div>
+
+  <!-- Barre de navigation -->
+  <div class="bg-gray-100 shadow px-6 py-4 flex flex-wrap items-center justify-between gap-4 md:gap-8">
+    <!-- Logo -->
+    <div class="flex items-center gap-2">
+      <img src="/image/cropped-cropped-nohat_bg_removed_b8027c84-e1759146418219.png" alt="logo" class="w-12 h-12" />
+      <span class="text-xl font-semibold text-gray-800">MaBoutique</span>
+    </div>
+
+    <!-- Barre de recherche -->
+    <div class="flex-grow md:flex md:justify-center hidden md:block">
+      <input type="text" placeholder="Rechercher un produit..."
+        class="border border-gray-300 rounded px-4 py-2 w-full max-w-md" />
+    </div>
+
+    <!-- Icônes actions -->
+    <div class="flex items-center gap-4">
+      <!-- Wishlist -->
+      <button title="Ma Wishlist">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+          stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6 text-gray-700 hover:text-red-500 transition">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M21.752 7.784c0 4.068-5.252 7.41-9.752 11.216C7.5 15.194 2.248 11.852 2.248 7.784a5.252 5.252 0 019.504-3.348 5.252 5.252 0 019.504 3.348z" />
+        </svg>
+      </button>
+
+      <!-- Panier -->
+      <button title="Mon Panier">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+          stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6 text-gray-700 hover:text-blue-600 transition">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M2.25 3h1.386a.75.75 0 01.728.564l.805 3.222m0 0L6.87 15.79a1.5 1.5 0 001.454 1.21h8.575a1.5 1.5 0 001.455-1.21l1.174-5.816a.75.75 0 00-.728-.901H6.194m0 0L5.25 3M9 21h.008v.008H9V21zm6 0h.008v.008H15V21z" />
+        </svg>
+      </button>
+
+      <!-- Aide -->
+      <button title="Besoin d'aide ?">
+        <div
+          class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-500 text-gray-700 hover:text-blue-600 transition text-base">
+          ?
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Header avec slider -->
+  <header class="relative w-full overflow-hidden">
+    <div class="flex transition-transform duration-1000 ease-in-out" id="slider">
+      <img src="/image/image-smartphone-iphone.jpg" alt="smartphone"
+        class="w-full h-[80vh] object-cover flex-shrink-0" />
+      <img src="/image/nature-morte-de-livres-contre-technologie.jpg" alt="livres vs tech"
+        class="w-full h-[80vh] object-cover flex-shrink-0" />
+      <img src="/image/automobil.jpg" alt="drone" class="w-full h-[80vh] object-cover flex-shrink-0" />
+     
+
+    </div>
+
+    <!-- Texte superposé -->
+    <div class="absolute inset-0 flex flex-col items-start justify-center text-white px-4 text-center">
+      <h1 class="text-3xl md:text-5xl font-bold fade-in-up">Bienvenue sur notre boutique</h1>
+      <p class="mt-4 text-lg md:text-xl fade-in-up">Les meilleurs smartphones aux meilleurs prix</p>
+      <button
+        class="mt-6 px-6 py-2 bg-blue-600 hover:bg-blue-700 transition rounded text-white font-medium shadow">
+        Acheter maintenant
+      </button>
+    </div>
+
+    <div class="absolute inset-0 flex justify-end items-start m-4">
+    <button id="hamburgerBtn" class=" text-white md:hidden focus:outline-none">
+  <!-- Icône Heroicons (menu) -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none"
+       viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <path stroke-linecap="round" stroke-linejoin="round"
+          d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+</button>
+<div class="bg-white flex rounded py-10 flex-col w-1/5 p-6 shadow ">
+  <a href="telephone.html" class="p-2">Téléphones </a>
+    <a href="ordinateur.html" class="p-2">Ordinateurs & Laptops</a>
+ 
+ <a href="tablette.html" class="p-2">Tablettes</a>
+
+    <a href="drone.html" class="p-2">Drones</a>
+      <a href="imprimante.html" class="p-2">Imprimantes & Scanners</a>
+   
+  
+    
+       <a href="Accessoire.html" class="p-2">Accessoires </a>
+     
+        <a href="maintenance.html" class="p-2">Maintenance & Services</a>
+      
+        
+
+</div>
+</div>
+
+  </header>
+
+  <!-- Script slider automatique -->
+  <script>
+    let currentIndex = 0;
+    const images = document.querySelectorAll('#slider img');
+    const totalImages = images.length;
+
+    function showNextImage() {
+      currentIndex = (currentIndex + 1) % totalImages;
+      const offset = -currentIndex * 100;
+      document.querySelector('#slider').style.transform = `translateX(${offset}%)`;
+    }
+
+    setInterval(showNextImage, 3000);
+  </script>
+</body>
+
+</html>

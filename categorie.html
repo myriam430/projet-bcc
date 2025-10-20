@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gestion des catégories - BCC</title>
+    <link rel="stylesheet" href="src/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #4338ca;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-dark: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        /* Scrollbar personnalisée */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(241, 241, 241, 0.8);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #6366f1, #4f46e5);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #4f46e5, #4338ca);
+        }
+
+        /* Animations optimisées */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(79, 70, 229, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .animate-slide-in {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 2s infinite;
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Composants réutilisables */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .input-field {
+            display: block;
+            width: 100%;
+            padding: 0.875rem 1.25rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.875rem 1.75rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(79, 70, 229, 0.35);
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(245, 101, 101, 0.2);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(245, 101, 101, 0.3);
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+        }
+
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-delete {
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+        }
+
+        /* Header avec effet de verre */
+        .header-glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Sidebar améliorée */
+        .sidebar-gradient {
+            background: var(--gradient-dark);
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-item {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .sidebar-item:hover::before {
+            left: 100%;
+        }
+
+        /* Cartes de statistiques */
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tableau amélioré */
+        .table-modern {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .table-modern thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .table-modern th {
+            color: white;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+            text-align: left;
+        }
+
+        .table-modern td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .table-modern tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .table-modern tbody tr:hover {
+            background: rgba(99, 102, 241, 0.05);
+            transform: translateX(5px);
+        }
+
+        /* Notification Toast améliorée */
+        .toast-success {
+            background: var(--gradient-success);
+            box-shadow: 0 10px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .toast-error {
+            background: var(--gradient-secondary);
+            box-shadow: 0 10px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .toast-warning {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            box-shadow: 0 10px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        /* Section vide stylisée */
+        .empty-state {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Badge pour le compteur */
+        .category-count {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(102, 126, 234, 0.2);
+        }
+
+        /* Overlay pour mobile */
+        .sidebar-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Améliorations responsive */
+        @media (max-width: 768px) {
+            .input-field {
+                padding: 1rem 1.25rem;
+                font-size: 1rem;
+            }
+
+            .table-modern {
+                font-size: 0.875rem;
+            }
+
+            .table-modern th,
+            .table-modern td {
+                padding: 0.75rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container-padding {
+                padding: 1rem;
+            }
+
+            .empty-state {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+    <!-- Header Mobile -->
+    <header class="md:hidden sticky top-0 z-40 header-glass">
+        <div class="flex justify-between items-center p-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-2 rounded-xl shadow-md">
+                    <i class="fas fa-store text-white text-lg"></i>
+                </div>
+                <h1
+                    class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                    Business Center</h1>
+            </div>
+            <button id="mobileMenuBtn"
+                class="focus:outline-none p-2 bg-indigo-100 rounded-lg hover:bg-indigo-200 transition-colors">
+                <i class="fas fa-bars text-indigo-600 text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Overlay Mobile -->
+    <div id="mobileOverlay" class="md:hidden fixed inset-0 z-40 sidebar-overlay opacity-0 pointer-events-none"></div>
+
+    <!-- Sidebar Mobile -->
+    <aside id="mobileSidebar"
+        class="fixed inset-y-0 left-0 z-50 w-64 sidebar-gradient text-white transform -translate-x-full transition-transform duration-300 md:hidden">
+        <div class="p-6 border-b border-indigo-500/30">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white p-2 rounded-xl shadow-lg">
+                    <i class="fas fa-store text-indigo-600 text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold">BCC</h1>
+                    <p class="text-xs text-indigo-200">Business Center</p>
+                </div>
+            </div>
+        </div>
+        <nav class="p-4 space-y-2">
+            <ul class="space-y-2">
+                <li><a href="tableau.html"
+                        class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50"><i
+                            class="fas fa-tachometer-alt w-5 mr-3"></i> Tableau de bord</a></li>
+                <li><a href="produit.html"
+                        class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50"><i
+                            class="fas fa-box w-5 mr-3"></i> Produits</a></li>
+                <li><a href="categorie.html" class="sidebar-item flex items-center p-3 rounded-xl bg-indigo-700/80"><i
+                            class="fas fa-tags w-5 mr-3"></i> Catégories</a></li>
+                <li><a href="stock.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50"><i
+                            class="fas fa-warehouse w-5 mr-3"></i> Stocks</a></li>
+                <li><a href="commande.html"
+                        class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50"><i
+                            class="fas fa-shopping-cart w-5 mr-3"></i> Commandes</a></li>
+                <li><a href="historique.html"
+                        class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50"><i
+                            class="fas fa-history w-5 mr-3"></i> Historique</a></li>
+                <li><a href="user.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50"><i
+                            class="fas fa-user-lock w-5 mr-3"></i> Paramètre</a></li>
+            </ul>
+            <button onclick="handleLogout()"
+                class="w-full mt-6 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white py-3 px-4 rounded-xl flex items-center justify-center font-medium transition-all shadow-lg hover:shadow-xl">
+                <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion
+            </button>
+        </nav>
+    </aside>
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Sidebar Desktop -->
+        <aside class="hidden md:flex flex-col sidebar-gradient text-white w-72 p-6 sticky top-0 h-screen">
+            <div class="flex items-center space-x-3 mb-10">
+                <div class="bg-white p-3 rounded-xl shadow-lg animate-float">
+                    <i class="fas fa-store text-indigo-600 text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold">BCC</h1>
+                    <p class="text-sm text-indigo-200">Business Center Corporation</p>
+                </div>
+            </div>
+            <nav class="flex-1 space-y-2">
+                <a href="tableau.html"
+                    class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all"><i
+                        class="fas fa-tachometer-alt w-5 mr-3"></i> Tableau de bord</a>
+                <a href="produit.html"
+                    class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all"><i
+                        class="fas fa-box w-5 mr-3"></i> Produits</a>
+                <a href="categorie.html" class="sidebar-item flex items-center p-3 rounded-xl bg-indigo-700/80"><i
+                        class="fas fa-tags w-5 mr-3"></i> Catégories</a>
+                <a href="stock.html"
+                    class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all"><i
+                        class="fas fa-warehouse w-5 mr-3"></i> Stocks</a>
+                <a href="commande.html"
+                    class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all"><i
+                        class="fas fa-shopping-cart w-5 mr-3"></i> Commandes</a>
+                <a href="historique.html"
+                    class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all"><i
+                        class="fas fa-history w-5 mr-3"></i> Historique</a>
+                <a href="user.html"
+                    class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all"><i
+                        class="fas fa-user-lock w-5 mr-3"></i> Paramètre</a>
+            </nav>
+            <div class="pt-4 border-t border-indigo-500/30 mt-auto">
+                <div class="flex items-center space-x-3 mb-4 p-3 rounded-xl bg-indigo-700/30">
+                    <div
+                        class="bg-white text-indigo-800 w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-md">
+                        AD</div>
+                    <div>
+                        <p class="text-sm font-medium">Admin User</p>
+                        <p class="text-xs text-indigo-200">admin@BCC.com</p>
+                    </div>
+                </div>
+                
+            </div>
+        </aside>
+
+        <!-- Menu Principal -->
+        <main class="flex-1 p-4 md:p-8 overflow-x-hidden container-padding">
+            <div class="max-w-6xl mx-auto">
+                <!-- En-tête avec statistiques -->
+                <div class="mb-8">
+                   <div class="lg:flex  lg:flex-row  lg:items-center lg:justify-between lg:mb-6"> 
+                        <div>
+                            <h1
+                                class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                                Gestion des Catégories</h1>
+                            <p class="text-gray-600 ">Organisez et gérez vos catégories de produits</p>
+                        </div>
+
+                        <div class=" mt-6  grid  grid-cols-2 md:grid-cols-3 gap-4 items-center space-x-4">
+                            <button id="btnRetour"
+                                class="flex items-center w-full space-x-2 text-gray-600 hover:text-gray-800 transition-colors duration-200 p-3 rounded-lg bg-white   border border-gray-200">
+                                <i class="fas fa-arrow-left"></i>
+                                <span class=" sm:inline">Retour</span>
+                            </button>
+                            <div class="bg-white/80 backdrop-blur w-full rounded-xl px-4 py-1 shadow-sm">
+                                <p class="text-sm text-gray-500">Catégories total</p>
+                                <p class="text-xl text-center font-bold text-indigo-600" id="categoryCount">0</p>
+                            </div> 
+                            
+                           <button onclick="handleLogout()"
+                                class="w-full bg-gradient-to-r hidden md:flex from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white py-3 px-4 rounded-xl  items-center justify-center font-medium transition-all shadow-lg hover:shadow-xl">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulaire d'ajout de catégorie -->
+                <div class="glass-effect rounded-2xl shadow-xl p-6 mb-8 animate-fade-in">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-plus-circle text-indigo-500 mr-3"></i>
+                            Ajouter une Nouvelle Catégorie
+                        </h2>
+                        <p class="text-gray-600">Créez une nouvelle catégorie pour organiser vos produits</p>
+                    </div>
+
+                    <!-- Formulaire -->
+                    <form id="categoryForm" autocomplete="off" class="space-y-6">
+                        <input type="hidden" id="editIndex" value="-1" />
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="md:col-span-2">
+                                <label for="categoryInput" class="block text-lg font-semibold text-gray-700 mb-2">
+                                    <i class="fas fa-tag text-indigo-500 mr-2"></i>
+                                    Nom de la catégorie
+                                </label>
+                                <input type="text" id="categoryInput"
+                                    placeholder="Saisissez le nom de la nouvelle catégorie..."
+                                    class="input-field text-lg" required />
+                            </div>
+                            <div class="flex items-end">
+                                <button type="submit" id="submitBtn"
+                                    class="btn-primary w-full flex items-center justify-center">
+                                    <i class="fas fa-plus mr-2"></i>
+                                    <span id="submitBtnText">Ajouter</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Section Liste des Catégories -->
+                <div class="glass-effect rounded-2xl shadow-xl p-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
+                        <div class="mb-4 sm:mb-0">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2 flex items-center">
+                                <i class="fas fa-list text-indigo-500 mr-3"></i>
+                                Liste des Catégories
+                            </h2>
+                            <p class="text-gray-600">Visualisez et gérez toutes vos catégories</p>
+                        </div>
+                        <div class="text-lg text-gray-500 bg-white/80 backdrop-blur rounded-xl px-4 py-2">
+                            <span id="totalCategories" class="font-bold text-indigo-600">0</span> catégorie(s) au total
+                        </div>
+                    </div>
+
+                    <!-- Tableau des catégories -->
+                    <div class="table-modern rounded-2xl overflow-hidden">
+                        <table class="w-full" aria-label="Liste des catégories">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">#</th>
+                                    <th class="text-left">Nom de la catégorie</th>
+                                    <th class="text-left">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoriesTableBody" class="divide-y divide-gray-100">
+                                <!-- Catégories injectées ici -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- État vide -->
+                    <div id="emptyState" class="empty-state hidden">
+                        <div class="max-w-md mx-auto">
+                            <div
+                                class="bg-gradient-to-br from-indigo-100 to-purple-100 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i class="fas fa-tags text-4xl text-indigo-500"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-700 mb-2">Aucune catégorie</h3>
+                            <p class="text-gray-500 mb-6">Commencez par ajouter votre première catégorie pour organiser
+                                vos produits</p>
+                            <button onclick="document.getElementById('categoryInput').focus()"
+                                class="btn-primary inline-flex items-center">
+                                <i class="fas fa-plus-circle mr-2"></i>
+                                Ajouter une catégorie
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification Toast améliorée -->
+    <div id="toast"
+        class="fixed bottom-4 right-4 text-white px-6 py-4 rounded-xl shadow-2xl transform transition-all duration-300 translate-y-4 opacity-0 pointer-events-none flex items-center z-50 max-w-md">
+        <i class="fas fa-check-circle mr-3 text-xl"></i>
+        <span id="toast-message" class="text-sm font-medium flex-1"></span>
+        <button onclick="hideToast()" class="ml-4 text-white/80 hover:text-white">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <script>
+        // Données initiales
+        let categories = ["Téléphone", "Tablette", "Ordinateur", "Laptop"];
+
+        const tableBody = document.getElementById("categoriesTableBody");
+        const form = document.getElementById("categoryForm");
+        const input = document.getElementById("categoryInput");
+        const editIndexInput = document.getElementById("editIndex");
+        const submitBtn = document.getElementById("submitBtn");
+        const submitBtnText = document.getElementById("submitBtnText");
+        const emptyState = document.getElementById("emptyState");
+        const categoryCount = document.getElementById("categoryCount");
+        const totalCategories = document.getElementById("totalCategories");
+        const btnRetour = document.getElementById("btnRetour");
+
+        // Gestion du menu mobile
+        const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+        const mobileSidebar = document.getElementById("mobileSidebar");
+        const mobileOverlay = document.getElementById("mobileOverlay");
+
+        if (mobileMenuBtn && mobileSidebar && mobileOverlay) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileSidebar.classList.remove('-translate-x-full');
+                mobileOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            });
+
+            mobileOverlay.addEventListener('click', () => {
+                mobileSidebar.classList.add('-translate-x-full');
+                mobileOverlay.classList.add('opacity-0', 'pointer-events-none');
+            });
+
+            // Fermer le menu en appuyant sur Échap
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    mobileSidebar.classList.add('-translate-x-full');
+                    mobileOverlay.classList.add('opacity-0', 'pointer-events-none');
+                }
+            });
+        }
+
+        // Affiche les catégories dans le tableau
+        function renderCategories() {
+            tableBody.innerHTML = "";
+
+            if (categories.length === 0) {
+                emptyState.classList.remove('hidden');
+                document.querySelector('.table-modern').classList.add('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                document.querySelector('.table-modern').classList.remove('hidden');
+
+                categories.forEach((cat, i) => {
+                    const tr = document.createElement("tr");
+                    tr.className = "animate-fade-in";
+                    tr.innerHTML = `
+                        <td class="font-medium text-gray-900">${i + 1}</td>
+                        <td class="font-medium text-gray-800">${cat}</td>
+                        <td class="space-x-2">
+                            <button class="btn-edit mb-4" onclick="editCategory(${i})" aria-label="Modifier la catégorie ${cat}">
+                                <i class="fas fa-edit mr-1"></i>Modifier
+                            </button>
+                            <button class="btn-delete" onclick="confirmDelete(${i})" aria-label="Supprimer la catégorie ${cat}">
+                                <i class="fas fa-trash mr-1"></i>Supprimer
+                            </button>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            }
+
+            // Mettre à jour les compteurs
+            updateCounters();
+        }
+
+        // Mettre à jour les compteurs
+        function updateCounters() {
+            const count = categories.length;
+            categoryCount.textContent = count;
+            totalCategories.textContent = `${count} catégorie${count > 1 ? 's' : ''}`;
+        }
+
+        // Ajouter ou modifier catégorie
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const newCat = input.value.trim();
+            const editIndex = parseInt(editIndexInput.value);
+
+            if (newCat === "") {
+                showNotification("Veuillez saisir un nom de catégorie", "warning");
+                return;
+            }
+
+            if (editIndex === -1) {
+                // Ajout
+                categories.push(newCat);
+                showNotification(`Catégorie "${newCat}" ajoutée avec succès.`);
+            } else {
+                // Modification
+                const oldCat = categories[editIndex];
+                categories[editIndex] = newCat;
+                showNotification(`Catégorie "${oldCat}" modifiée en "${newCat}".`);
+            }
+
+            resetForm();
+            renderCategories();
+        });
+
+        // Editer une catégorie
+        window.editCategory = function (index) {
+            input.value = categories[index];
+            editIndexInput.value = index;
+            submitBtnText.textContent = "Modifier";
+            submitBtn.querySelector('i').className = "fas fa-save mr-2";
+            input.focus();
+
+            // Scroll vers le formulaire
+            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+
+        // Réinitialiser le formulaire
+        function resetForm() {
+            input.value = "";
+            editIndexInput.value = -1;
+            submitBtnText.textContent = "Ajouter";
+            submitBtn.querySelector('i').className = "fas fa-plus mr-2";
+        }
+
+        // Confirmer suppression
+        window.confirmDelete = function (index) {
+            const catName = categories[index];
+            if (confirm(`Voulez-vous vraiment supprimer la catégorie "${catName}" ?`)) {
+                categories.splice(index, 1);
+                renderCategories();
+                showNotification(`Catégorie "${catName}" supprimée.`);
+                resetForm();
+            }
+        };
+
+        // Notifications (apparition/disparition)
+        function showNotification(msg, type = "success") {
+            const toast = document.getElementById("toast");
+            const message = document.getElementById("toast-message");
+            const icon = toast.querySelector('i');
+
+            message.textContent = msg;
+
+            // Appliquer le style selon le type
+            if (type === "success") {
+                toast.className = "toast-success fixed bottom-4 right-4 text-white px-6 py-4 rounded-xl shadow-2xl transform transition-all duration-300 translate-y-4 opacity-0 pointer-events-none flex items-center z-50 max-w-md";
+                icon.className = "fas fa-check-circle mr-3 text-xl";
+            } else if (type === "warning") {
+                toast.className = "toast-warning fixed bottom-4 right-4 text-white px-6 py-4 rounded-xl shadow-2xl transform transition-all duration-300 translate-y-4 opacity-0 pointer-events-none flex items-center z-50 max-w-md";
+                icon.className = "fas fa-exclamation-triangle mr-3 text-xl";
+            } else if (type === "error") {
+                toast.className = "toast-error fixed bottom-4 right-4 text-white px-6 py-4 rounded-xl shadow-2xl transform transition-all duration-300 translate-y-4 opacity-0 pointer-events-none flex items-center z-50 max-w-md";
+                icon.className = "fas fa-times-circle mr-3 text-xl";
+            }
+
+            // Animation d'apparition
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+            });
+
+            // Disparition automatique
+            setTimeout(() => {
+                hideToast();
+            }, 5000);
+        }
+
+        function hideToast() {
+            const toast = document.getElementById("toast");
+            toast.classList.remove('translate-y-0', 'opacity-100');
+            toast.classList.add('translate-y-4', 'opacity-0');
+        }
+
+        // Bouton retour
+        btnRetour.addEventListener("click", () => {
+            window.history.back();
+        });
+
+        // Gestion de la déconnexion
+        function handleLogout() {
+            if (confirm("Êtes-vous sûr de vouloir vous déconnecter ?")) {
+                showToast('Déconnexion réussie');
+                setTimeout(() => {
+                    window.location.href = 'inscription.html';
+                }, 1500);
+            }
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function () {
+            renderCategories();
+
+            // Animation d'entrée pour le contenu principal
+            const mainContent = document.querySelector('main');
+            mainContent.style.opacity = '0';
+            mainContent.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                mainContent.style.transition = 'all 0.5s ease';
+                mainContent.style.opacity = '1';
+                mainContent.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
+</body>
+
+</html>

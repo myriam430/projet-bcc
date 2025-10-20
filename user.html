@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paramètres - BCC</title>
+  <meta name="description" content="Gestion des paramètres de l'entreprise Business Center Corporation">
+  <link rel="stylesheet" href="src/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --color-primary: #291f97;
+      --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --color-primary-dark: #4338ca;
+      --color-secondary: #282391;
+      --color-success: #10b981;
+      --color-warning: #f59e0b;
+      --color-danger: #ef4444;
+      --color-light-gray: #f8fafc;
+      --color-medium-gray: #e2e8f0;
+      --color-dark-gray: #64748b;
+      --color-text-dark: #1e293b;
+      --gradient-dark: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      min-height: 100vh;
+    }
+
+    /* Sidebar améliorée */
+    .sidebar-gradient {
+      background: var(--gradient-dark);
+      box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar-item {
+      position: relative;
+      overflow: hidden;
+      transition: background-color 0.3s ease;
+    }
+
+    .sidebar-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .sidebar-item:hover::before {
+      left: 100%;
+    }
+
+    /* STYLES PROFESSIONNELS POUR LE MAIN */
+
+    /* Header du main */
+    .main-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 2rem;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .main-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(30%, -30%);
+    }
+
+    .main-header h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .main-header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Cartes professionnelles */
+    .professional-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      margin-bottom: 1.5rem;
+    }
+
+    .professional-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #f1f5f9;
+    }
+
+    .card-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      color: white;
+      font-size: 1.25rem;
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0;
+    }
+
+     /* Scrollbar personnalisée */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(241, 241, 241, 0.8);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #6366f1, #4f46e5);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #4f46e5, #4338ca);
+        }
+
+         /* Animations optimisées */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(79, 70, 229, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .animate-slide-in {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 2s infinite;
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+
+    .card-subtitle {
+      font-size: 0.95rem;
+      color: #64748b;
+      margin-top: 0.25rem;
+    }
+
+    /* Profile section améliorée */
+    .profile-section {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .profile-avatar {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+
+    .profile-image {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 4px solid #e2e8f0;
+      object-fit: cover;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-image:hover {
+      border-color: #667eea;
+      transform: scale(1.05);
+    }
+
+    .profile-upload-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: 3px solid white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .profile-upload-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Formulaires professionnels */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .form-input:hover {
+      border-color: #c7d2fe;
+    }
+
+    /* Boutons professionnels */
+    .btn {
+      padding: 0.875rem 2rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-deconnexion {
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+
+    }
+
+    .btn-deconnexion:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Liste des utilisateurs */
+    .users-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .user-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid #e5e7eb;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .user-card:hover {
+      border-color: #667eea;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .user-details h4 {
+      margin: 0;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .user-details p {
+      margin: 0.25rem 0 0 0;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+
+    .user-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    /* Badges professionnels */
+    .badge {
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .badge-admin {
+      background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+      color: white;
+    }
+
+    .badge-commercial {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+    }
+
+    .badge-comptable {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+    }
+
+    .badge-stock {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+    }
+
+    /* Modal professionnel */
+    .professional-modal {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Toast notification amélioré */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transform: translateX(100%);
+      opacity: 0;
+      transition: all 0.4s ease;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .toast.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .toast.success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+    }
+
+    .toast.error {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+    }
+
+    /* CORRECTION: Styles pour l'aside desktop */
+    .sidebar-desktop {
+      display: flex;
+      flex-direction: column;
+      background: var(--gradient-dark);
+      color: white;
+      width: 288px;
+      padding: 24px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .main-container {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ========== RESPONSIVE DESIGN ========== */
+    
+    /* Téléphone (jusqu'à 767px) */
+    @media (max-width: 767px) {
+      .main-content {
+        padding: 1rem;
+      }
+
+      .main-header {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border-radius: 12px;
+      }
+
+      .main-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .main-header p {
+        font-size: 0.9rem;
+      }
+
+      .professional-card {
+        padding: 1.2rem;
+        border-radius: 12px;
+      }
+
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .card-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+
+      .card-title {
+        font-size: 1.25rem;
+      }
+
+      .card-subtitle {
+        font-size: 0.85rem;
+      }
+
+      .profile-section {
+        padding: 1rem 0;
+      }
+
+      .profile-image {
+        width: 100px;
+        height: 100px;
+      }
+
+      .profile-upload-btn {
+        width: 35px;
+        height: 35px;
+        bottom: 5px;
+        right: 5px;
+      }
+
+      .btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+      }
+
+      .user-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem;
+      }
+
+      .user-info {
+        width: 100%;
+      }
+
+      .user-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
+
+      .modal-content {
+        margin: 1rem;
+        width: calc(100% - 2rem);
+      }
+
+      .toast {
+        bottom: 1rem;
+        right: 1rem;
+        left: 1rem;
+        transform: translateY(100%);
+      }
+
+      .toast.show {
+        transform: translateY(0);
+      }
+    }
+
+    /* Tablette (768px à 1023px) */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .main-content {
+        padding: 1.5rem;
+      }
+
+      .main-header {
+        padding: 1.75rem;
+        border-radius: 14px;
+      }
+
+      .main-header h1 {
+        font-size: 1.75rem;
+      }
+
+      .main-header p {
+        font-size: 1rem;
+      }
+
+      .professional-card {
+        padding: 1.75rem;
+      }
+
+      .card-header {
+        gap: 1rem;
+      }
+
+      .card-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+      }
+
+      .card-title {
+        font-size: 1.35rem;
+      }
+
+      .card-subtitle {
+        font-size: 0.9rem;
+      }
+
+      .profile-image {
+        width: 120px;
+        height: 120px;
+      }
+
+      .profile-upload-btn {
+        width: 38px;
+        height: 38px;
+      }
+
+      .user-card {
+        padding: 1.25rem;
+      }
+
+      .modal-content {
+        margin: 2rem;
+        width: calc(100% - 4rem);
+      }
+    }
+
+    /* Ordinateur (1024px et plus) */
+    @media (min-width: 1024px) {
+      /* Styles déjà définis pour desktop */
+    }
+
+    /* Améliorations pour les très petits écrans */
+    @media (max-width: 480px) {
+      .main-content {
+        padding: 0.75rem;
+      }
+
+      .main-header {
+        padding: 1rem;
+      }
+
+      .main-header h1 {
+        font-size: 1.25rem;
+      }
+
+      .professional-card {
+        padding: 1rem;
+      }
+
+      .card-header {
+        gap: 0.75rem;
+      }
+
+      .card-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+      }
+
+      .card-title {
+        font-size: 1.1rem;
+      }
+
+      .form-input {
+        padding: 0.75rem;
+      }
+
+      .btn {
+        padding: 0.65rem 1.25rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    /* Améliorations pour les très grands écrans */
+    @media (min-width: 1440px) {
+      .main-content {
+        padding: 3rem;
+      }
+
+      .professional-card {
+        padding: 2.5rem;
+      }
+
+      .main-header {
+        padding: 3rem;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+    <!-- Header Mobile -->
+    <header class="md:hidden sticky top-0 z-40 header-glass">
+        <div class="flex justify-between items-center p-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-2 rounded-xl shadow-md">
+                    <i class="fas fa-store text-white text-lg"></i>
+                </div>
+                <h1
+                    class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                    Business Center</h1>
+            </div>
+            <button id="mobileMenuBtn"
+                class="focus:outline-none p-2 bg-indigo-100 rounded-lg hover:bg-indigo-200 transition-colors">
+                <i class="fas fa-bars text-indigo-600 text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Overlay Mobile -->
+    <div id="mobileOverlay" class="md:hidden fixed inset-0 z-40 sidebar-overlay opacity-0 pointer-events-none"></div>
+
+    <!-- Sidebar Mobile -->
+    <aside id="mobileSidebar"
+        class="fixed inset-y-0 left-0 z-50  w-64 sidebar-gradient text-white transform -translate-x-full transition-transform duration-300 md:hidden">
+        <div class="p-6 border-b border-indigo-500/30">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white p-2 rounded-xl shadow-lg">
+                    <i class="fas fa-store text-indigo-600 text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold">BCC</h1>
+                    <p class="text-xs text-indigo-200">Business Center</p>
+                </div>
+            </div>
+        </div>
+        <nav class="p-4 space-y-2">
+            <ul class="space-y-2">
+                <li><a href="tableau.html"
+                        class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50"><i
+                            class="fas fa-tachometer-alt w-5 mr-3"></i> Tableau de bord</a></li>
+                <li><a href="produit.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/80"><i
+                            class="fas fa-box w-5 mr-3"></i> Produits</a></li>
+                <li><a href="categorie.html"
+                        class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50"><i
+                            class="fas fa-tags w-5 mr-3"></i> Catégories</a></li>
+                <li><a href="stock.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50"><i
+                            class="fas fa-warehouse w-5 mr-3"></i> Stocks</a></li>
+                <li><a href="commande.html"
+                        class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50"><i
+                            class="fas fa-shopping-cart w-5 mr-3"></i> Commandes</a></li>
+                <li><a href="historique.html"
+                        class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50"><i
+                            class="fas fa-history w-5 mr-3"></i> Historique</a></li>
+                <li><a href="user.html" class="sidebar-item flex items-center p-3 rounded-xl bg-indigo-700/50"><i
+                            class="fas fa-user-lock w-5 mr-3"></i>Paramètre</a></li>
+            </ul>
+            <button onclick="handleLogout()"
+                class="w-full mt-6 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white py-3 px-4 rounded-xl flex items-center justify-center font-medium transition-all shadow-lg hover:shadow-xl">
+                <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion
+            </button>
+        </nav>
+    </aside>
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Sidebar Desktop -->
+        <aside class="hidden md:flex flex-col sidebar-gradient text-white w-72 p-6 sticky top-0 h-screen">
+            <div class="flex items-center space-x-3 mb-10">
+                <div class="bg-white p-3 rounded-xl shadow-lg animate-float">
+                    <i class="fas fa-store text-indigo-600 text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold">BCC</h1>
+                    <p class="text-sm text-indigo-200">Business Center Corporation</p>
+                </div>
+            </div>
+            <nav class="flex-1 space-y-2">
+                <a href="tableau.html"
+                    class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all"><i
+                        class="fas fa-tachometer-alt w-5 mr-3"></i> Tableau de bord</a>
+                <a href="produit.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/80"><i
+                        class="fas fa-box w-5 mr-3"></i> Produits</a>
+                <a href="categorie.html"
+                    class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all"><i
+                        class="fas fa-tags w-5 mr-3"></i> Catégories</a>
+                <a href="stock.html"
+                    class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all"><i
+                        class="fas fa-warehouse w-5 mr-3"></i> Stocks</a>
+                <a href="commande.html"
+                    class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all"><i
+                        class="fas fa-shopping-cart w-5 mr-3"></i> Commandes</a>
+                <a href="historique.html"
+                    class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all"><i
+                        class="fas fa-history w-5 mr-3"></i> Historique</a>
+                <a href="user.html"
+                    class="sidebar-item flex items-center p-3 rounded-xl bg-indigo-700/50 transition-all"><i
+                        class="fas fa-user-lock w-5 mr-3"></i>Paramètre</a>
+            </nav>
+            <div class="pt-4 border-t border-indigo-500/30 mt-auto">
+                <div class="flex items-center space-x-3 mb-4 p-3 rounded-xl bg-indigo-700/30">
+                    <div
+                        class="bg-white text-indigo-800 w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-md">
+                        AD</div>
+                    <div>
+                        <p class="text-sm font-medium">Admin User</p>
+                        <p class="text-xs text-indigo-200">admin@BCC.com</p>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+    <!-- Main Content Professionnel -->
+    <main class="main-content animate-fade-in">
+      <!-- Header du main -->
+      <div class="main-header">
+        <h1><i class="fas fa-cogs mr-3"></i>Paramètres du Système</h1>
+        <p>Gérez les paramètres de votre entreprise et les utilisateurs</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Carte Profil Administrateur -->
+        <div class="professional-card">
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="fas fa-user-shield"></i>
+            </div>
+            <div>
+              <h2 class="card-title">Profil Administrateur</h2>
+              <p class="card-subtitle">Gérez vos informations personnelles</p>
+            </div>
+          </div>
+
+          <div class="profile-section">
+            <div class="profile-avatar">
+              <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Photo de profil"
+                class="profile-image" id="profilePic">
+              <div class="profile-upload-btn" onclick="document.getElementById('fileInput').click()">
+                <i class="fas fa-camera"></i>
+              </div>
+              <input type="file" id="fileInput" class="hidden" accept="image/*">
+            </div>
+
+            <div class="space-y-4">
+              <div class="form-group">
+                <label class="form-label">Nom d'utilisateur</label>
+                <input type="text" class="form-input" placeholder="Votre nom d'utilisateur" value="Admin User">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Adresse email</label>
+                <input type="email" class="form-input" placeholder="votre@email.com" value="admin@BCC.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Mot de passe</label>
+                <input type="password" class="form-input" placeholder="••••••••" value="password">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carte Gestion des Utilisateurs -->
+        <div class="professional-card">
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="fas fa-users-cog"></i>
+            </div>
+            <div>
+              <h2 class="card-title">Gestion des Utilisateurs</h2>
+              <p class="card-subtitle">Gérez les accès au système</p>
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center mb-6">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">Utilisateurs actifs</h3>
+              <p class="text-sm text-gray-600">Gérez les droits d'accès</p>
+            </div>
+            <button onclick="openUserModal()" class="btn btn-primary">
+              <i class="fas fa-plus"></i> Nouvel utilisateur
+            </button>
+          </div>
+
+          <div class="users-grid" id="usersList">
+            <!-- Les utilisateurs seront insérés ici dynamiquement -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions Globales -->
+      <div class="professional-card mt-6">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div>
+            <h2 class="card-title">Actions de Sécurité</h2>
+            <p class="card-subtitle">Actions globales du système</p>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-between items-center">
+          <div>
+            <h3 class="font-semibold text-gray-800">Sauvegarder les modifications</h3>
+            <p class="text-sm text-gray-600">Appliquez tous les changements effectués</p>
+          </div>
+          <div class="flex flex-row md:flex-col lg:flex-row gap-3">
+            <button class="btn btn-primary" id="saveBtn">
+              <i class="fas fa-save"></i> Sauvegarder
+            </button>
+            <button onclick="handleLogout()"
+              class="bg-gradient-to-r btn btn-deconnexion  from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 p-3 rounded-lg font-semibold text-center text-white">
+              <i class="fas fa-sign-out-alt"></i> Déconnexion
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Ajout Utilisateur -->
+  <div id="userModal" class="fixed inset-0 z-50 flex items-center justify-center professional-modal hidden">
+    <div class="modal-content w-full max-w-md mx-4">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-semibold text-gray-800">Ajouter un utilisateur</h3>
+          <button onclick="closeUserModal()" class="text-gray-400 hover:text-gray-500 transition-colors">
+            <i class="fas fa-times text-lg"></i>
+          </button>
+        </div>
+
+        <form id="userForm" class="space-y-5">
+          <div class="form-group">
+            <label class="form-label">Nom complet</label>
+            <input type="text" id="userName" class="form-input" placeholder="Nom et prénom" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" id="userEmail" class="form-input" placeholder="email@entreprise.com" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Rôle</label>
+            <select id="userRole" class="form-input" required>
+              <option value="">Sélectionner un rôle</option>
+              <option value="admin">Administrateur</option>
+              <option value="commercial">Commercial</option>
+              <option value="comptable">Comptable</option>
+              <option value="stock">Gestionnaire de stock</option>
+            </select>
+          </div>
+
+          <div class="flex items-center">
+            <input type="checkbox" id="userHasRights"
+              class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+            <label for="userHasRights" class="ml-3 text-sm font-medium text-gray-700">
+              Droits de signature et de cachet
+            </label>
+          </div>
+
+          <div class="pt-4 flex justify-end space-x-3">
+            <button type="button" onclick="closeUserModal()"
+              class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">
+              Annuler
+            </button>
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-user-plus"></i> Créer l'utilisateur
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <i class="fas fa-check-circle text-lg"></i>
+    <span id="toast-message" class="font-medium"></span>
+  </div>
+
+  <script>
+    // ===== GESTION DU MENU MOBILE =====
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.getElementById('mobileSidebar');
+    const overlay = document.getElementById('mobileOverlay');
+
+    mobileBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+      overlay.classList.toggle('opacity-0');
+      overlay.classList.toggle('pointer-events-none');
+    });
+
+    overlay.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('opacity-0');
+      overlay.classList.add('pointer-events-none');
+    });
+
+    // ===== TOAST =====
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toast-message');
+
+      toast.className = `toast ${type}`;
+      toastMessage.textContent = message;
+
+      toast.classList.add('show');
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // ===== GESTION DES UTILISATEURS =====
+    let users = [
+      { name: 'Admin User', email: 'admin@BCC.com', role: 'admin', rights: true }
+    ];
+
+    function initUsersList() {
+      const container = document.getElementById('usersList');
+      container.innerHTML = '';
+
+      if (users.length === 0) {
+        container.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-users text-4xl mb-3 text-gray-300"></i>
+                        <p class="text-lg font-medium">Aucun utilisateur</p>
+                        <p class="text-sm mt-1">Commencez par ajouter un utilisateur</p>
+                    </div>
+                `;
+        return;
+      }
+
+      users.forEach(user => addUserToList(user.name, user.email, user.role, user.rights));
+    }
+
+    function addUserToList(name, email, role, hasRights) {
+      const container = document.getElementById('usersList');
+
+      // Remove empty state if it exists
+      if (container.querySelector('.text-center')) {
+        container.innerHTML = '';
+      }
+
+      const userCard = document.createElement('div');
+      userCard.className = 'user-card';
+
+      const roleBadge = role === 'admin' ? 'badge-admin' :
+        role === 'commercial' ? 'badge-commercial' :
+          role === 'comptable' ? 'badge-comptable' : 'badge-stock';
+
+      const roleText = role === 'admin' ? 'Administrateur' :
+        role === 'commercial' ? 'Commercial' :
+          role === 'comptable' ? 'Comptable' : 'Gestionnaire Stock';
+
+      userCard.innerHTML = `
+                <div class="user-info">
+                    <div class="user-avatar">${name.split(' ').map(n => n[0]).join('')}</div>
+                    <div class="user-details">
+                        <h4>${name}</h4>
+                        <p>${email}</p>
+                        <div class="flex gap-2 mt-2">
+                            <span class="badge ${roleBadge}">
+                                <i class="fas fa-user-tag"></i> ${roleText}
+                            </span>
+                            ${hasRights ? '<span class="badge badge-admin"><i class="fas fa-signature"></i> Signature</span>' : ''}
+                        </div>
+                    </div>
+                </div>
+                <div class="user-actions">
+                    <button class="text-red-500 hover:text-red-700 p-2 rounded-lg transition-colors" onclick="removeUser(this)" title="Supprimer l'utilisateur">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+      container.appendChild(userCard);
+    }
+
+    function removeUser(button) {
+      if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
+        const userCard = button.closest('.user-card');
+        const userName = userCard.querySelector('h4').textContent;
+
+        users = users.filter(user => user.name !== userName);
+        userCard.remove();
+
+        const container = document.getElementById('usersList');
+        if (container.children.length === 0) {
+          initUsersList();
+        }
+
+        showToast('Utilisateur supprimé avec succès');
+      }
+    }
+
+    // ===== MODAL =====
+    function openUserModal() {
+      document.getElementById('userModal').classList.remove('hidden');
+    }
+
+    function closeUserModal() {
+      document.getElementById('userModal').classList.add('hidden');
+      document.getElementById('userForm').reset();
+    }
+
+    // ===== GESTION DES FICHIERS =====
+    function initFileUploads() {
+      const fileInput = document.getElementById('fileInput');
+      const profilePic = document.getElementById('profilePic');
+
+      fileInput.addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (!file.type.match('image.*')) {
+          showToast('Veuillez sélectionner une image valide', 'error');
+          return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+          showToast('L\'image ne doit pas dépasser 5MB', 'error');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          profilePic.src = e.target.result;
+          showToast('Photo de profil mise à jour avec succès');
+        };
+        reader.onerror = function () {
+          showToast('Erreur lors du chargement de l\'image', 'error');
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // ===== INITIALISATION =====
+    document.addEventListener('DOMContentLoaded', function () {
+      initUsersList();
+      initFileUploads();
+
+      // Formulaire utilisateur
+      document.getElementById('userForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const name = document.getElementById('userName').value.trim();
+        const email = document.getElementById('userEmail').value.trim();
+        const role = document.getElementById('userRole').value;
+        const hasRights = document.getElementById('userHasRights').checked;
+
+        if (!name || !email || !role) {
+          showToast('Veuillez remplir tous les champs obligatoires', 'error');
+          return;
+        }
+
+        users.push({ name, email, role, rights: hasRights });
+        addUserToList(name, email, role, hasRights);
+        showToast('Utilisateur ajouté avec succès');
+        closeUserModal();
+      });
+
+      // Bouton de sauvegarde
+      document.getElementById('saveBtn').addEventListener('click', function () {
+        showToast('Toutes les modifications ont été sauvegardées');
+      });
+
+      // Clic extérieur modal
+      document.getElementById('userModal').addEventListener('click', function (e) {
+        if (e.target === this) {
+          closeUserModal();
+        }
+      });
+    });
+
+    // ===== FONCTIONS PLACEHOLDER =====
+    function handleLogout() {
+      if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+        showToast('Déconnexion réussie');
+        setTimeout(() => {
+          window.location.href = 'inscription.html';
+        }, 1000);
+      }
+    }
+  </script>
+</body>
+
+</html>

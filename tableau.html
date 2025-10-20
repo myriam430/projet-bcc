@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tableau de Bord - BCC</title>
+  <meta name="description" content="Gestion des paramètres de l'entreprise Business Center Corporation">
+  <link rel="stylesheet" href="src/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --color-primary: #291f97;
+      --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --color-primary-dark: #4338ca;
+      --color-secondary: #282391;
+      --color-success: #10b981;
+      --color-warning: #f59e0b;
+      --color-danger: #ef4444;
+      --color-light-gray: #f8fafc;
+      --color-medium-gray: #e2e8f0;
+      --color-dark-gray: #64748b;
+      --color-text-dark: #1e293b;
+      --gradient-dark: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      min-height: 100vh;
+    }
+
+    /* ===== RESPONSIVE BREAKPOINTS ===== */
+    /* Mobile: < 768px */
+    /* Tablet: 768px - 1024px */
+    /* Desktop: > 1024px */
+
+    /* Sidebar améliorée */
+    .sidebar-gradient {
+      background: var(--gradient-dark);
+      box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+    }
+     /* Overlay pour mobile */
+        .sidebar-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+    .sidebar-item {
+      position: relative;
+      overflow: hidden;
+      transition: background-color 0.3s ease;
+    }
+
+    .sidebar-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .sidebar-item:hover::before {
+      left: 100%;
+    }
+
+    /* STYLES PROFESSIONNELS POUR LE MAIN */
+
+    /* Header du main */
+    .main-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 2rem;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .main-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(30%, -30%);
+    }
+
+    .main-header h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .main-header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Cartes professionnelles */
+    .professional-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      margin-bottom: 1.5rem;
+    }
+
+    .professional-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #f1f5f9;
+    }
+
+    .card-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      color: white;
+      font-size: 1.25rem;
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0;
+    }
+
+    /* Scrollbar personnalisée */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(241, 241, 241, 0.8);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #6366f1, #4f46e5);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(to bottom, #4f46e5, #4338ca);
+    }
+
+    /* Animations optimisées */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(79, 70, 229, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+      }
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    .animate-slide-in {
+      animation: slideIn 0.3s ease-out forwards;
+    }
+
+    .animate-pulse-slow {
+      animation: pulse 2s infinite;
+    }
+
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .card-subtitle {
+      font-size: 0.95rem;
+      color: #64748b;
+      margin-top: 0.25rem;
+    }
+
+    /* Profile section améliorée */
+    .profile-section {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .profile-avatar {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+
+    .profile-image {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 4px solid #e2e8f0;
+      object-fit: cover;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-image:hover {
+      border-color: #667eea;
+      transform: scale(1.05);
+    }
+
+    .profile-upload-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: 3px solid white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .profile-upload-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Formulaires professionnels */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .form-input:hover {
+      border-color: #c7d2fe;
+    }
+
+    /* Boutons professionnels */
+    .btn {
+      padding: 0.875rem 2rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-deconnexion {
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-deconnexion:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Liste des utilisateurs */
+    .users-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .user-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid #e5e7eb;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .user-card:hover {
+      border-color: #667eea;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .user-details h4 {
+      margin: 0;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .user-details p {
+      margin: 0.25rem 0 0 0;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+
+    .user-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    /* Badges professionnels */
+    .badge {
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .badge-admin {
+      background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+      color: white;
+    }
+
+    .badge-commercial {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+    }
+
+    .badge-comptable {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+    }
+
+    .badge-stock {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+    }
+
+    /* Modal professionnel */
+    .professional-modal {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Toast notification amélioré */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transform: translateX(100%);
+      opacity: 0;
+      transition: all 0.4s ease;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .toast.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .toast.success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+    }
+
+    .toast.error {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+    }
+
+    /* ===== LAYOUT PRINCIPAL RESPONSIVE ===== */
+    .sidebar-desktop {
+      display: none;
+      flex-direction: column;
+      background: var(--gradient-dark);
+      color: white;
+      width: 288px;
+      padding: 24px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .main-container {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Styles pour le tableau de bord */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .header h2 {
+      font-size: 1.875rem;
+      font-weight: 600;
+      color: var(--color-text-dark);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-info img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid var(--color-primary);
+    }
+
+    .btn-logout-sidebar {
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 6px rgba(239, 68, 68, 0.25);
+    }
+
+    .btn-logout-sidebar:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(239, 68, 68, 0.35);
+    }
+
+    /* Styles pour la barre d'utilisateur en haut */
+    .user-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding: 1rem 0;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-profile img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 3px solid #667eea;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .user-profile-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-profile-name {
+      font-weight: 600;
+      color: var(--color-text-dark);
+    }
+
+    .user-profile-role {
+      color: var(--color-dark-gray);
+      font-size: 0.9rem;
+    }
+
+    /* Stats Cards */
+    .stats-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-card {
+      display: flex;
+      align-items: center;
+    }
+
+    .stat-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .products .stat-icon {
+      background-color: rgba(67, 97, 238, 0.1);
+      color: var(--color-primary);
+    }
+
+    .orders .stat-icon {
+      background-color: rgba(76, 201, 240, 0.1);
+      color: var(--color-success);
+    }
+
+    .sales .stat-icon {
+      background-color: rgba(247, 37, 133, 0.1);
+      color: var(--color-warning);
+    }
+
+    .stock .stat-icon {
+      background-color: rgba(40, 167, 69, 0.1);
+      color: #28a745;
+    }
+
+    .stat-info h3 {
+      font-size: 0.9rem;
+      color: var(--color-dark-gray);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-info h1 {
+      font-size: 2rem;
+      color: var(--color-text-dark);
+      font-weight: 700;
+    }
+
+    .positive {
+      color: #28a745;
+    }
+
+    .negative {
+      color: #dc3545;
+    }
+
+    /* Charts Section */
+    .charts {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .chart-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      min-height: 300px;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-header h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--color-text-dark);
+    }
+
+    .chart-actions select {
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--color-medium-gray);
+      background-color: white;
+      font-size: 0.9rem;
+    }
+
+    /* History Section */
+    .history-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .history-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      min-height: 300px;
+    }
+
+    .history-card h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      color: var(--color-text-dark);
+    }
+
+    .history-card h2 a {
+      font-size: 0.9rem;
+      font-weight: normal;
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    .history-list {
+      list-style: none;
+    }
+
+    .history-item {
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--color-medium-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .history-item:last-child {
+      border-bottom: none;
+    }
+
+    .product-info,
+    .order-info,
+    .stock-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-name,
+    .order-id,
+    .stock-product {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      color: var(--color-text-dark);
+    }
+
+    .product-category,
+    .order-date,
+    .stock-change {
+      font-size: 0.8rem;
+      color: var(--color-dark-gray);
+    }
+
+    .product-price,
+    .order-amount,
+    .stock-quantity {
+      font-weight: 600;
+      color: var(--color-primary);
+    }
+
+    .stock-change.positive {
+      color: #28a745;
+    }
+
+    .stock-change.negative {
+      color: #dc3545;
+    }
+
+    /* États vides */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      color: var(--color-dark-gray);
+      text-align: center;
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .empty-state p {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state small {
+      font-size: 0.875rem;
+      opacity: 0.7;
+    }
+
+    /* ===== RESPONSIVE DESIGN ===== */
+
+    /* Tablettes (768px - 1024px) */
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .sidebar-desktop {
+        width: 240px;
+        padding: 1.5rem;
+      }
+
+      .main-content {
+        padding: 1.5rem;
+      }
+
+      .main-header {
+        padding: 1.5rem;
+      }
+
+      .main-header h1 {
+        font-size: 2rem;
+      }
+
+      .stats-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+
+      .charts {
+        grid-template-columns: 1fr;
+      }
+
+      .history-section {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .user-top-bar {
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .user-profile img {
+        width: 50px;
+        height: 50px;
+      }
+
+      .user-profile-name {
+        font-size: 1.1rem;
+      }
+    }
+
+    /* Mobiles (< 768px) */
+    @media (max-width: 767px) {
+      .main-content {
+        padding: 1rem;
+      }
+
+      .main-header {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      .main-header h1 {
+        font-size: 1.75rem;
+      }
+
+      .main-header p {
+        font-size: 1rem;
+      }
+
+      .user-top-bar {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+        text-align: center;
+      }
+
+      .user-profile {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+      }
+
+      .user-profile img {
+        width: 80px;
+        height: 80px;
+      }
+
+      .user-profile-name {
+        font-size: 1.3rem;
+      }
+
+      .btn-logout-sidebar {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .stats-cards {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .stat-card {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .stat-icon {
+        margin-right: 0;
+        margin-bottom: 1rem;
+        width: 70px;
+        height: 70px;
+      }
+
+      .stat-info h1 {
+        font-size: 1.75rem;
+      }
+
+      .charts {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .chart-container {
+        padding: 1rem;
+      }
+
+      .chart-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+
+      .chart-header h3 {
+        font-size: 1.1rem;
+      }
+
+      .history-section {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .history-card {
+        padding: 1rem;
+      }
+
+      .history-card h2 {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+      }
+
+      .history-item {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+      }
+
+      .professional-card {
+        padding: 1.5rem;
+      }
+
+      .card-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+      }
+
+      .card-icon {
+        margin-right: 0;
+      }
+    }
+
+    /* Desktop (> 1024px) */
+    @media (min-width: 1025px) {
+      .sidebar-desktop {
+        display: flex;
+      }
+
+      .header-mobile,
+      .sidebar-mobile,
+      .sidebar-overlay {
+        display: none;
+      }
+    }
+
+    /* Écrans très larges (> 1440px) */
+    @media (min-width: 1440px) {
+      .main-content {
+        padding: 3rem;
+      }
+
+      .stats-cards {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .charts {
+        grid-template-columns: 2fr 1fr;
+      }
+
+      .history-section {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* Mode paysage sur mobile */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .sidebar-desktop {
+        height: auto;
+        position: relative;
+      }
+
+      .main-content {
+        padding: 1rem;
+      }
+
+      .main-header {
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .stats-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+  <!-- Header Mobile -->
+  <header class="md:hidden sticky top-0 z-40 bg-white shadow-sm">
+    <div class="flex justify-between items-center p-4">
+      <div class="flex items-center space-x-3">
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-2 rounded-xl shadow-md">
+          <i class="fas fa-store text-white text-lg"></i>
+        </div>
+        <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+          Business Center
+        </h1>
+      </div>
+      <button id="mobileMenuBtn"
+        class="focus:outline-none p-2 bg-indigo-100 rounded-lg hover:bg-indigo-200 transition-colors">
+        <i class="fas fa-bars text-indigo-600 text-xl"></i>
+      </button>
+    </div>
+  </header>
+
+  
+    <!-- Overlay Mobile -->
+    <div id="mobileOverlay" class="md:hidden fixed inset-0 z-40 sidebar-overlay opacity-0 pointer-events-none"></div>
+
+  <!-- Sidebar Mobile -->
+  <aside id="mobileSidebar"
+    class="fixed inset-y-0 left-0 z-50 w-64 sidebar-gradient text-white transform -translate-x-full transition-transform duration-300 md:hidden">
+    <div class="p-6 border-b border-indigo-500/30">
+      <div class="flex items-center space-x-3">
+        <div class="bg-white p-2 rounded-xl shadow-lg">
+          <i class="fas fa-store text-indigo-600 text-xl"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold">BCC</h1>
+          <p class="text-xs text-indigo-200">Business Center</p>
+        </div>
+      </div>
+    </div>
+    <nav class="p-4 space-y-2">
+          <a href="tableau.html" class="sidebar-item flex items-center p-3 rounded-xl bg-indigo-700/50">
+        <i class="fas fa-tachometer-alt w-5 mr-3"></i> Tableau de bord
+      </a>
+      <a href="produit.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50">
+        <i class="fas fa-box w-5 mr-3"></i> Produits
+      </a>
+      <a href="categorie.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50">
+        <i class="fas fa-tags w-5 mr-3"></i> Catégories
+      </a>
+      <a href="stock.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50">
+        <i class="fas fa-warehouse w-5 mr-3"></i> Stocks
+      </a>
+      <a href="commande.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50">
+        <i class="fas fa-shopping-cart w-5 mr-3"></i> Commandes
+      </a>
+      <a href="historique.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50">
+        <i class="fas fa-history w-5 mr-3"></i> Historique
+      </a>
+      <a href="user.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50">
+        <i class="fas fa-cogs w-5 mr-3"></i> Paramètres
+      </a>
+      <button onclick="handleLogout()"
+        class="w-full mt-6 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white py-3 px-4 rounded-xl flex items-center justify-center font-medium transition-all shadow-lg hover:shadow-xl">
+        <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion
+      </button>
+    </nav>
+  </aside>
+
+  <!-- Conteneur principal -->
+  <div class="main-container">
+    <!-- Sidebar Desktop -->
+    <aside class="sidebar-desktop">
+      <div class="flex items-center space-x-3 mb-10">
+        <div class="bg-white p-3 animate-float rounded-xl shadow-lg">
+          <i class="fas fa-store text-indigo-600 text-2xl"></i>
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold">BCC</h1>
+          <p class="text-sm text-indigo-200">Business Center Corporation</p>
+        </div>
+      </div>
+      <nav class="flex-1 space-y-2">
+        <a href="tableau.html" class="sidebar-item flex items-center p-3 rounded-xl bg-indigo-700/50 transition-all">
+          <i class="fas fa-tachometer-alt w-5 mr-3"></i> Tableau de bord
+        </a>
+        <a href="produit.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all">
+          <i class="fas fa-box w-5 mr-3"></i> Produits
+        </a>
+        <a href="categorie.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all">
+          <i class="fas fa-tags w-5 mr-3"></i> Catégories
+        </a>
+        <a href="stock.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all">
+          <i class="fas fa-warehouse w-5 mr-3"></i> Stocks
+        </a>
+        <a href="commande.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all">
+          <i class="fas fa-shopping-cart w-5 mr-3"></i> Commandes
+        </a>
+        <a href="historique.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all">
+          <i class="fas fa-history w-5 mr-3"></i> Historique
+        </a>
+        <a href="user.html" class="sidebar-item flex items-center p-3 rounded-xl hover:bg-indigo-700/50 transition-all">
+          <i class="fas fa-cogs w-5 mr-3"></i> Paramètres
+        </a>
+      </nav>
+      <div class="pt-4 border-t border-indigo-500/30 mt-auto">
+        <div class="flex items-center space-x-3 mb-4 p-3 rounded-xl bg-indigo-700/30">
+          <div class="bg-white text-indigo-800 w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-md">
+            AD
+          </div>
+          <div>
+            <p class="text-sm font-medium">Admin User</p>
+            <p class="text-xs text-indigo-200">admin@BCC.com</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content flex-1 animate-fade-in">
+      <!-- Barre utilisateur avec photo et bouton déconnexion -->
+      <div class="user-top-bar ">
+        <div class="user-profile">
+          <img id="profileIcon" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Photo Admin"
+            onclick="document.getElementById('fileInput').click()">
+          <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="changerIcone(this)">
+          <div class="user-profile-info">
+            <span class="user-profile-name text-3xl">AD</span>
+          </div>
+        </div>
+        <button onclick="handleLogout()"
+          class="btn-logout-sidebar bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700">
+          <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </button>
+      </div>
+
+      <!-- Header du main -->
+      <div class="main-header">
+        <h1><i class="fas fa-tachometer-alt mr-3"></i>Tableau de Bord</h1>
+        <p>Vue d'ensemble de votre activité commerciale</p>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-cards">
+        <div class="card stat-card products">
+          <div class="stat-icon">
+            <i class="fas fa-box"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Produits</h3>
+            <h1 id="products-count">0</h1>
+          </div>
+        </div>
+
+        <div class="card stat-card orders">
+          <div class="stat-icon">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Commandes</h3>
+            <h1 id="orders-count">0</h1>
+          </div>
+        </div>
+
+        <div class="card stat-card sales">
+          <div class="stat-icon">
+            <i class="fas fa-euro-sign"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Ventes</h3>
+            <h1 id="sales-count">0</h1>
+          </div>
+        </div>
+
+        <div class="card stat-card stock">
+          <div class="stat-icon">
+            <i class="fas fa-warehouse"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Stock Moyen</h3>
+            <h1 id="stock-count">0</h1>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="charts">
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3>Ventes Mensuelles</h3>
+            <div class="chart-actions">
+              <select id="chart-period" onchange="updateCharts()">
+                <option value="6months">6 derniers mois</option>
+                <option value="thisYear">Cette année</option>
+                <option value="lastYear">L'année dernière</option>
+              </select>
+            </div>
+          </div>
+          <div class="empty-state">
+            <i class="fas fa-chart-line"></i>
+            <p>Aucune donnée de vente disponible</p>
+            <small>Les données apparaîtront ici une fois disponibles</small>
+          </div>
+          <canvas id="salesChart" style="display: none;"></canvas>
+        </div>
+
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3>Répartition des Ventes</h3>
+          </div>
+          <div class="empty-state">
+            <i class="fas fa-chart-pie"></i>
+            <p>Aucune donnée de catégorie disponible</p>
+            <small>Les données apparaîtront ici une fois disponibles</small>
+          </div>
+          <canvas id="categoryChart" style="display: none;"></canvas>
+        </div>
+      </div>
+
+      <!-- History Section -->
+      <div class="history-section">
+        <!-- Historique des Produits -->
+        <div class="history-card">
+          <h2>Produits Récents <a href="produit.html">Voir tout</a></h2>
+          <div class="empty-state">
+            <i class="fas fa-box-open"></i>
+            <p>Aucun produit récent</p>
+            <small>Les produits apparaîtront ici</small>
+          </div>
+          <ul class="history-list" id="recent-products-list" style="display: none;">
+            <!-- Contenu dynamique -->
+          </ul>
+        </div>
+
+        <!-- Historique des Commandes -->
+        <div class="history-card">
+          <h2>Commandes Récents <a href="commande.html">Voir tout</a></h2>
+          <div class="empty-state">
+            <i class="fas fa-shopping-cart"></i>
+            <p>Aucune commande récente</p>
+            <small>Les commandes apparaîtront ici</small>
+          </div>
+          <ul class="history-list" id="recent-orders-list" style="display: none;">
+            <!-- Contenu dynamique -->
+          </ul>
+        </div>
+
+        <!-- Historique des Stocks -->
+        <div class="history-card">
+          <h2>Mouvements de Stock <a href="stock.html">Voir tout</a></h2>
+          <div class="empty-state">
+            <i class="fas fa-warehouse"></i>
+            <p>Aucun mouvement de stock</p>
+            <small>Les mouvements apparaîtront ici</small>
+          </div>
+          <ul class="history-list" id="stock-movements-list" style="display: none;">
+            <!-- Contenu dynamique -->
+          </ul>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Variables globales pour les graphiques
+    let salesChart, categoryChart;
+
+    // Fonction pour changer l'icône de profil
+    function changerIcone(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          document.getElementById('profileIcon').src = e.target.result;
+        };
+
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    // Fonction pour initialiser les graphiques (structure prête)
+    function initializeCharts() {
+      // Sales Chart - initialisé mais caché
+      const salesCtx = document.getElementById('salesChart').getContext('2d');
+      salesChart = new Chart(salesCtx, {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [{
+            label: 'Ventes (€)',
+            data: [],
+            borderColor: '#4361ee',
+            backgroundColor: 'rgba(67, 97, 238, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: false,
+              grid: {
+                drawBorder: false
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+
+      // Category Chart - initialisé mais caché
+      const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+      categoryChart = new Chart(categoryCtx, {
+        type: 'doughnut',
+        data: {
+          labels: [],
+          datasets: [{
+            data: [],
+            backgroundColor: [
+              '#4361ee', '#4cc9f0', '#f72585', '#7209b7', '#3a0ca3'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+    }
+
+    // Fonction pour mettre à jour les graphiques (structure prête)
+    function updateCharts() {
+      const period = document.getElementById('chart-period').value;
+      fetchData(period);
+    }
+
+    // Fonction pour récupérer les données (structure vide prête)
+    function fetchData(period) {
+      // Structure de données vide
+      const salesData = {
+        labels: [],
+        data: []
+      };
+
+      const categoryData = {
+        labels: [],
+        data: []
+      };
+
+      const statsData = {
+        products: 0,
+        orders: 0,
+        sales: 0,
+        stock: 0
+      };
+
+      const recentProducts = [];
+      const recentOrders = [];
+      const stockMovements = [];
+
+      updateChartsData(salesData, categoryData);
+      updateStats(statsData);
+      updateHistoryLists(recentProducts, recentOrders, stockMovements);
+    }
+
+    // Fonction pour mettre à jour les données des graphiques (structure prête)
+    function updateChartsData(salesData, categoryData) {
+      salesChart.data.labels = salesData.labels;
+      salesChart.data.datasets[0].data = salesData.data;
+      salesChart.update();
+
+      categoryChart.data.labels = categoryData.labels;
+      categoryChart.data.datasets[0].data = categoryData.data;
+      categoryChart.update();
+    }
+
+    // Fonction pour mettre à jour les statistiques (structure prête)
+    function updateStats(statsData) {
+      document.getElementById('products-count').textContent = statsData.products;
+      document.getElementById('orders-count').textContent = statsData.orders;
+      document.getElementById('sales-count').textContent = statsData.sales;
+      document.getElementById('stock-count').textContent = statsData.stock;
+    }
+
+    // Fonction pour mettre à jour les listes d'historique (structure prête)
+    function updateHistoryLists(products, orders, stockMovements) {
+      const productsList = document.getElementById('recent-products-list');
+      const ordersList = document.getElementById('recent-orders-list');
+      const stockList = document.getElementById('stock-movements-list');
+
+      productsList.innerHTML = '';
+      ordersList.innerHTML = '';
+      stockList.innerHTML = '';
+
+      // Logique pour remplir les listes...
+    }
+
+    // Fonction pour basculer entre état vide et données
+    function toggleEmptyState(showEmpty) {
+      const emptyStates = document.querySelectorAll('.empty-state');
+      const charts = document.querySelectorAll('canvas');
+      const lists = document.querySelectorAll('.history-list');
+
+      if (showEmpty) {
+        emptyStates.forEach(state => state.style.display = 'flex');
+        charts.forEach(chart => chart.style.display = 'none');
+        lists.forEach(list => list.style.display = 'none');
+      } else {
+        emptyStates.forEach(state => state.style.display = 'none');
+        charts.forEach(chart => chart.style.display = 'block');
+        lists.forEach(list => list.style.display = 'block');
+      }
+    }
+
+    // Gestion du menu mobile
+  
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const mobileSidebar = document.getElementById('mobileSidebar');
+      const mobileOverlay = document.getElementById('mobileOverlay');
+
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function () {
+          mobileSidebar.classList.toggle('-translate-x-full');
+          mobileOverlay.classList.toggle('opacity-0');
+          mobileOverlay.classList.toggle('pointer-events-none');
+        });
+     
+
+      if (mobileOverlay) {
+        mobileOverlay.addEventListener('click', function () {
+          mobileSidebar.classList.add('-translate-x-full');
+          mobileOverlay.classList.add('opacity-0', 'pointer-events-none');
+        });
+      }
+    }
+
+    // Gestion de la déconnexion
+    function handleLogout() {
+      if (confirm("Êtes-vous sûr de vouloir vous déconnecter ?")) {
+        document.body.style.opacity = '0.7';
+        document.body.style.transition = 'opacity 0.5s ease';
+
+        setTimeout(() => {
+          window.location.href = "inscription.html";
+        }, 500);
+      }
+    }
+
+    // Redimensionnement responsive des graphiques
+    function handleResize() {
+      if (salesChart) salesChart.resize();
+      if (categoryChart) categoryChart.resize();
+    }
+
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', function () {
+      initializeCharts();
+      setupMobileMenu();
+      fetchData('6months');
+      toggleEmptyState(true);
+      
+      // Écouter le redimensionnement de la fenêtre
+      window.addEventListener('resize', handleResize);
+    });
+  </script>
+</body>
+</html>
